@@ -63,8 +63,32 @@
 						<Import-Package>${bundle.config.import.package}, *;resolution:=optional</Import-Package>
 						<Bundle-ClassPath>., {maven-dependencies}</Bundle-ClassPath>
 					</instructions>
+					<finalName>${talend.job.finalName}</finalName>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>${basedir}/src/main/assemblies/assembly.xml</descriptor>
+                            </descriptors>
+                            <tarLongFileMode>gnu</tarLongFileMode>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <finalName>${talend.job.name}-bundle-${project.version}</finalName>
+                            <archive>
+                                <manifestFile>${current.bundle.resources.dir}/META-INF/MANIFEST.MF</manifestFile>
+                            </archive>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
     <profiles>
