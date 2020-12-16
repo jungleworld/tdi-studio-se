@@ -218,7 +218,17 @@ public class MavenJavaProcessor extends JavaProcessor {
                 if (jobInfo.isTestContainer()) {
                     continue;
                 }
-                String childJarName = JavaResourcesHelper.getJobJarName(jobInfo.getJobName(), jobInfo.getJobVersion());
+                
+                String childJobName = null;
+                if (jobInfo.getProcessItem() != null && jobInfo.getProcessItem().getProperty() !=null 
+                		&& "OSGI".equals(jobInfo.getProcessItem().getProperty().getAdditionalProperties().get(TalendProcessArgumentConstant.ARG_BUILD_TYPE))) {
+                	childJobName = jobInfo.getJobName() + "-bundle";
+                } else {
+                	childJobName = jobInfo.getJobName();
+                }
+                
+                String childJarName = JavaResourcesHelper.getJobJarName(childJobName, jobInfo.getJobVersion());
+                
                 if (!childJarName.equals(jarName)) {
                     exportJar += classPathSeparator + libPrefixPath + childJarName + FileExtensions.JAR_FILE_SUFFIX;
                 }
